@@ -8,5 +8,10 @@ module.exports = {
         return User.findOne({
             where: {username}
         });
+    },
+    update(updateArgs, username) {
+        return User.update(updateArgs, {
+            where: {username}
+        })
     }
 };
