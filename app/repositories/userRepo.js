@@ -5,6 +5,13 @@ module.exports = {
         return User.create(createArgs);
     },
     findByUsername(username) {
-        return User.findOne(username);
+        return User.findOne({
+            where: {username}
+        });
+    },
+    update(updateArgs, username) {
+        return User.update(updateArgs, {
+            where: {username}
+        })
     }
 };

@@ -6,5 +6,8 @@ module.exports = {
     },
     findByUsername(username) {
         return userRepo.findByUsername(username);
+    },
+    update(updateArgs, username){
+        return userRepo.update(updateArgs, username);
     }
 }
