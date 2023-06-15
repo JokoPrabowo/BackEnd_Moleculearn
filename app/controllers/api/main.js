@@ -2,14 +2,14 @@ module.exports = {
     index(req, res) {
       res.status(200).send({
         status: "OK",
-        message: "Back-End is up and running!",
+        message: "Server sedang berjalan!",
       });
     },
   
     onLost(req, res) {
       res.status(404).json({
         status: "FAIL",
-        message: "Route not found",
+        message: "Tautan tidak ditemukan!",
       });
     },
   
