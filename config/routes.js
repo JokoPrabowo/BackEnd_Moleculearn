@@ -15,6 +15,12 @@ apiRouter.post("/api/v1/signIn", controllers.api.v1.authController.signIn);
 //Pembaruan data pretest pengguna
 apiRouter.put("/api/v1/update", controllers.api.v1.authController.updateData);
 
+//Mengambil data dari 10 pertanyaan secara acak
+apiRouter.get("/api/v1/questions", controllers.api.v1.quizController.randomQuestion);
+
+//menyimpan nilai tes
+apiRouter.post("/api/v1/saveScore", controllers.api.v1.scoreController.addScore);
+
 //Tautan tidak ditemukan
 apiRouter.use(controllers.api.main.onLost);
 apiRouter.use(controllers.api.main.onError);

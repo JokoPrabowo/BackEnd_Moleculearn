@@ -1,5 +1,9 @@
 const authController = require("./authController");
+const quizController = require("./quizController");
+const scoreController = require("./scoreController");
 
 module.exports = {
-    authController
+    authController,
+    quizController,
+    scoreController,
 }
