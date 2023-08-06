@@ -30,7 +30,7 @@ function checkPassword(encryptedPassword, password) {
   
 function createToken(data) {
     return jwt.sign(data, process.env.JWT_SECRET || "Rahasia", {
-      expiresIn: 60 * 60,
+      expiresIn: 600 * 600,
     });
 }
   
@@ -48,6 +48,7 @@ module.exports = {
       const fullname = req.body.fullname;
       const password = await encryptPassword(req.body.password);
       const pretest = false;
+      const level = 1;
 
       //cek username telah digunakan
       const existedUser = await userService.findByUsername(username);
@@ -70,7 +71,7 @@ module.exports = {
 
       //membuat akun
       userService
-      .create({ username, fullname, password, pretest })
+      .create({ username, fullname, password, pretest, level })
       .then((user) =>{
           res.status(201).json({
               status: "REGISTER_SUCCESS",
@@ -92,14 +93,14 @@ module.exports = {
       //mencari akun
       let user = await userService.findByUsername(username);
       if (!user) {
-        res.status(404).json({ message: "Akun tidak ditemukan" });
+        res.status(404).json({ message: "Akun tidak ditemukan!" });
         return;
       }
       
       //cek kesamaan kata sandi
       const isPasswordCorrect = await checkPassword(user.password, password);
       if (!isPasswordCorrect) {
-        res.status(401).json({ message: "Password salah!" });
+        res.status(401).json({ message: "Password tidak tepat!" });
         return;
       }
       
@@ -133,7 +134,41 @@ module.exports = {
       user.pretest = true
       user.updatedAt = new Date();
 
-      await userService.update(user.id, user);
+      await userService.update(user, user.username);
+      delete user.password;
+
+      res.status(200).json({
+        status: "UPDATE_SUCCESS",
+        message: "Data pengguna telah diperbarui",
+        user,
+      });
+      console.log(user);
+    } catch (error) {
+      res.status(500).json({
+        status: "FAIL",
+        message: error.message,
+      });
+    }
+  },
+  
+  async updateLevel(req, res){
+    try {
+      //cek dan mengambil data dalam token
+      const bearerToken = req.headers.authorization;
+      const token = bearerToken.split("Bearer ")[1];
+      const tokenPayload = verifyToken(token);
+
+      //mencari data pengguna
+      const user = JSON.parse(
+        JSON.stringify(await userService.findByUsername(tokenPayload.username))
+      );
+      delete user.password;
+
+      // Masukan ke object Args
+      user.level = req.body.level;
+      user.updatedAt = new Date();
+
+      await userService.update(user, user.username);
       delete user.password;
 
       res.status(200).json({
@@ -143,10 +178,28 @@ module.exports = {
       });
 
     } catch (error) {
+      console.log(error.message)
       res.status(500).json({
         status: "FAIL",
         message: error.message,
       });
     }
-  }       
+  },
+
+  async getAll(req, res) {
+    try {
+        userService.findAll()
+        .then((user) => {
+          res.status(201).json({
+            status: "REGISTER_SUCCESS",
+            user
+        });          
+        })
+    }catch(error){
+      res.status(400).json({
+        status: "FAIL",
+        message: error.message,
+      });
+    }
+  }
 }
