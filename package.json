@@ -10,7 +10,7 @@
     "db:create": "sequelize-cli db:create",
     "db:drop": "sequelize-cli db:drop",
     "db:migrate": "sequelize-cli db:migrate",
-    "db:rollback": "sequelize-cli db:migrate:undo",
+    "db:rollback": "sequelize-cli db:migrate:undo:all",
     "db:seed": "sequelize-cli db:seed:all",
     "db:useed": "sequelize-cli db:seed:undo:all"
   },

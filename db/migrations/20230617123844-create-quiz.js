@@ -24,9 +24,6 @@ module.exports = {
       d: {
         type: Sequelize.STRING
       },
-      e: {
-        type: Sequelize.STRING
-      },
       answer: {
         type: Sequelize.STRING
       },

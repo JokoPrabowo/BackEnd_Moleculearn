@@ -1,9 +1,9 @@
 const quizService = require("../../../services/quizService");
 
 module.exports = {
-    randomQuestion(req, res){
+    getQuestion(req, res){
         quizService
-        .findQuestion(1)
+        .findQuestion(10)
         .then((question) =>{
             res.status(201).json({
                 status: "SUCCESSFULL",
